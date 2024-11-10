@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/route/route_path.dart';
 import 'package:untitled/screen/home_screen/view/home_screen.dart';
+import 'package:untitled/screen/login_screen/bloc/login_bloc.dart';
 import 'package:untitled/screen/login_screen/view/login_screen.dart';
 import 'package:untitled/screen/splash_screen/view/splash_screen.dart';
 
@@ -14,7 +16,10 @@ class Routes {
         );
       case loginScreen:
         return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
+          builder: (_) => BlocProvider<LoginBloc>(
+            create: (context) => LoginBloc(),
+            child: const LoginScreen(),
+          ),
         );
       case homeScreen:
         return MaterialPageRoute(

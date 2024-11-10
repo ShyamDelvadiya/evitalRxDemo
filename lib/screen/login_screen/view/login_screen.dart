@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/common_widgets/common_button.dart';
 import 'package:untitled/common_widgets/common_textfield.dart';
+import 'package:untitled/screen/login_screen/bloc/login_bloc.dart';
 import 'package:untitled/utils/color_constant.dart';
 import 'package:untitled/utils/image_constants.dart';
 import 'package:untitled/utils/size_constant.dart';
@@ -17,6 +19,14 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = false;
+  LoginBloc? bloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    bloc = context.read<LoginBloc>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,26 +98,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15, bottom: 0),
                           child: Center(
-                            child: CustomTextFormField(
-                              obscureText: _obscureText,
-                              suffixImage: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                                child: Icon(
-                                  _obscureText
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: AppColor.whiteColor,
-                                ),
-                              ),
-                              hintText: 'Enter Your Password',
-                              validator: (p0) {
-                                return null;
+                            child: BlocBuilder<LoginBloc, LoginState>(
+                              builder: (context, currentState) {
+                                if (currentState is ShowPwdState) {
+                                  _obscureText = !currentState.showPwd;
+                                }
+                                return CustomTextFormField(
+                                  obscureText: _obscureText,
+                                  suffixImage: GestureDetector(
+                                    onTap: () {
+                                      bloc?.add(
+                                          ShowPassEvent(showPwd: _obscureText));
+                                    },
+                                    child: Icon(
+                                      _obscureText
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: AppColor.whiteColor,
+                                    ),
+                                  ),
+                                  hintText: 'Enter Your Password',
+                                  validator: (p0) {
+                                    return null;
+                                  },
+                                  controller: password,
+                                );
                               },
-                              controller: password,
                             ),
                           ),
                         ),
