@@ -1,0 +1,4 @@
+class StringConstant{
+  static const String appName = "eVitalRx";
+
+}

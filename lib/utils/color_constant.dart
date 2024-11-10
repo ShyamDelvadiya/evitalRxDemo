@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+
+class AppColor {
+  AppColor._();
+  static const  backgroundColor = Color.fromRGBO(36, 41, 61, 1);
+  static const  suggestionColor = Color.fromRGBO(47, 56, 85, 1);
+  static const  hintTextColor = Color.fromRGBO(142, 140, 140, 1);
+  static const  suggestionColor2 = Color.fromRGBO(173, 203, 246, 0.26);
+  static const whiteColor = Color.fromRGBO(255, 255, 255, 1);
+  static const lightBlack = Color.fromRGBO(0, 0, 0, 0.5);
+  static const primary = Color(0xff2D62ED);
+  static const light = Color.fromRGBO(230, 237, 255, 1);
+  static const dimColor = Color.fromRGBO(245, 245, 245, 1);
+  static const darkTextColor = Color(0xff272D3B);
+  static const accentColor = Color(0xffFF007C);
+  static const accentColorDark = Color(0xff7D00B5);
+  static const lightYellow = Color(0xffFFF5E9);
+  static const tinnyBlackColor = Color(0xffE8E8E8);
+  static const tinnyBlack = Color(0xff000000);
+  static const grey = Color(0xff707070);
+  static const lightGrey = Color.fromRGBO(222, 222, 222, 1);
+  static const lightGreys = Color.fromRGBO(116, 113, 113, 1);
+  static const accentColorDark100 = Color(0xff783789);
+  static const disableColor = Color(0xff9CA1A4);
+  static const buttonSecondary = Color(0xFFFF6400);
+  static const selectedOptionIcon = Color(0xffEBF0FC);
+  static const blackColor = Colors.black;
+  static const greenColor = Color.fromRGBO(21, 203, 75, 1);
+  static const limeGreen = Color.fromRGBO(50, 190, 28, 1);
+  static const blue = Color.fromRGBO(39, 85, 205, 1);
+
+  static const lightGreenColor = Color.fromRGBO(213, 255, 226, 1);
+  // static const lightGreenColor = Color(0xffbbf2cb);
+  static const issueBoxHeader = Color(0xffdfe8f7);
+  static const selectedCardColor = Color(0xffE8F4FB);
+  static const chartColor = Color(0xff00CCF2);
+  static const redColor = Color(0xffFF0000);
+  static const orangeColor = Color(0xFFFF9800);
+  static const yellowColor = Color.fromRGBO(251, 254, 213, 1);
+  static const darkGrey = Color(0xff173177);
+  static const lightBlue = Color(0xff1C57A3);
+  static const lightPinkColor = Color.fromRGBO(239, 211, 251, 1);
+  static const paleYellow = Color.fromRGBO(254, 241, 213, 1);
+  static const skinColor = Color.fromRGBO(255, 252, 238, 1);
+  static const pinkColor = Color.fromRGBO(255, 218, 218, 1);
+  static const offlineColor = Color.fromRGBO(127, 126, 145, 1);
+  static const paymentGatewayColor = Color.fromRGBO(154, 155, 158, 1);
+  static const paleBlue = Color.fromRGBO(235, 240, 252, 1);
+  static const veryDimColor = Color.fromRGBO(246, 246, 246, 1);
+  static const lightSkyBlue = Color.fromRGBO(235, 248, 255, 1);
+  static const lightOrange = Color.fromRGBO(255, 247, 225, 1);
+}
