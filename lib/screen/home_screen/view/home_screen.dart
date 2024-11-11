@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentPage = 0;
   final int _pageSize = 20;
   HomeBloc? bloc;
-
+  List<UserModel> paginatedUsers=[];
   @override
   void initState() {
     // TODO: implement initState
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final users = currentState is UserLoadedState
                           ? currentState.users
                           : (currentState as UserFilteredState).filteredUsers;
-                      final paginatedUsers =
+                       paginatedUsers =
                           users.take((_currentPage + 1) * _pageSize).toList();
                       if (users.isEmpty) {
                         return const Center(
@@ -94,22 +94,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ));
                       }
-                      return UserListWidget(
-                        scrollController: _scrollController,
-                        paginatedUsers: paginatedUsers,
-                        editRupeesCallBack: (user) {
-                          _showEditDialog(context, user);
-                        },
-                      );
-                    } else {
-                      return const Center(
-                          child: Text(
-                        StringConstant.noUsersFound,
-                        style: TextStyle(
-                          color: AppColor.whiteColor,
-                        ),
-                      ));
-                    }
+
+                    } return UserListWidget(
+                      scrollController: _scrollController,
+                      paginatedUsers: paginatedUsers,
+                      editRupeesCallBack: (user) {
+                        _showEditDialog(context, user);
+                      },
+                    );
                   },
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:untitled/common_widgets/common_bottom_background.dart';
 import 'package:untitled/common_widgets/common_home_background.dart';
 import 'package:untitled/route/route_path.dart';
 import 'package:untitled/utils/color_constant.dart';
+import 'package:untitled/utils/image_constants.dart';
 import 'package:untitled/utils/pref_constants.dart';
 import 'package:untitled/utils/preference_utils.dart';
 import 'package:untitled/utils/size_constant.dart';
@@ -28,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen>
     checkUserLoggedIn();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return _mainView(context);
@@ -51,16 +51,11 @@ class _SplashScreenState extends State<SplashScreen>
         Center(
           child: FadeTransition(
             opacity: _fadeAnimation,
-            child: const Column(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  StringConstant.splashScreenTitle,
-                  style: TextStyle(
-                    color: AppColor.whiteColor,
-                    fontSize: FontConstant.extraBigFont23,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Image.asset(Images.splashImg,
+                width: MediaQuery.of(context).size.width,
                 ),
               ],
             ),

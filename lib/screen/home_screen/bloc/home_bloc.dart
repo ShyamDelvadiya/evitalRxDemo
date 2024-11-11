@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/screen/home_screen/models/user_model.dart';
 import 'package:untitled/service/hive_service.dart';
@@ -12,6 +11,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final hiveService = HiveService();
   List<UserModel> userList = [];
+  String? _lastQuery;
 
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>(_mapEventToState);
@@ -28,12 +28,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       event.user.rupee = event.newRupee;
       await event.user.save();
       userList = hiveService.userBox.values.toList();
-      emit(UserLoadedState(users: userList));
+      // Check if there's a last query to filter by
+      if (_lastQuery != null && _lastQuery!.isNotEmpty) {
+        final filteredUsersList = userList.where(
+          (user) {
+            final nameMatch = user.name.toLowerCase().contains(_lastQuery!);
+            final phoneMatch = user.phone.contains(_lastQuery!);
+            final cityMatch = user.city.toLowerCase().contains(_lastQuery!);
+            return nameMatch || phoneMatch || cityMatch;
+          },
+        ).toList();
+        emit(UserFilteredState(filteredUsersList));
+      } else {
+        emit(UserLoadedState(users: userList));
+      }
     } else if (event is FilterUsersEvent) {
       emit(UserLoadingState());
       await Future.delayed(const Duration(milliseconds: 700));
 
       final query = event.query.toLowerCase();
+      _lastQuery = event.query.toLowerCase();
+
       final filteredUsersList = userList.where(
         (user) {
           final nameMatch = user.name.toLowerCase().contains(query);
@@ -42,8 +57,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           return nameMatch || phoneMatch || cityMatch;
         },
       ).toList();
-
-      emit(UserLoadedState(users: filteredUsersList));
+      emit(UserFilteredState(filteredUsersList));
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive/hive.dart';
 import 'package:untitled/screen/home_screen/models/user_model.dart';
 
@@ -50,7 +52,15 @@ class HiveService {
     'https://randomuser.me/api/portraits/women/42.jpg',
     'https://randomuser.me/api/portraits/men/43.jpg',
   ];
-
+  final List<String> names = [
+    "Alice Johnson", "Bob Smith", "Charlotte Brown", "David Wilson",
+    "Emma Thompson", "Frank Clark", "Grace Lewis", "Henry Hall",
+    "Isla King", "Jack Wright", "Lily Scott", "Mason Green",
+    "Nora Adams", "Oliver Baker", "Penelope Harris", "Quinn Walker",
+    "Ryan Young", "Sophia Mitchell", "Thomas Hernandez", "Uma White",
+    "Violet Lee", "William Perez", "Xander Campbell", "Yara Carter",
+    "Zoe Phillips"
+  ];
   Future<void> initHive() async {
     Hive.registerAdapter(UserModelAdapter());
     await Hive.openBox<UserModel>(userBoxName);
@@ -63,9 +73,10 @@ class HiveService {
     List<UserModel> dummyUsers = List.generate(43, (index) {
       final userNumber = index + 1;
       final rupee = userNumber % 101;
+      final randomName = names[Random().nextInt(names.length)];
 
       return UserModel(
-        name: 'User $userNumber',
+        name: randomName,
         phone: '90330062${index.toString().padLeft(2, '0')}',
         city: index % 2 == 0 ? 'City A' : 'City B',
         imageUrl: imageUrls[index],
