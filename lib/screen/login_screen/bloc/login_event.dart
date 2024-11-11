@@ -8,3 +8,10 @@ class ShowPassEvent extends LoginEvent {
 
   ShowPassEvent({required this.showPwd});
 }
+
+class LoginButtonOnPressedEvent extends LoginEvent {
+  final String? mobileNumber;
+  final String? password;
+
+  LoginButtonOnPressedEvent({this.mobileNumber, this.password});
+}

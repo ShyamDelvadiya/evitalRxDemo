@@ -36,24 +36,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void checkUserLoggedIn() async {
     final bool isUserLogin = getBool(PrefConstants.isUserLoggedIn);
-    print('islogin---- $isUserLogin');
+    await Future.delayed(const Duration(seconds: 2));
 
-    await Future.delayed(
-      const Duration(seconds: 3),
-      () {
-        if (isUserLogin) {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            homeScreen,
-            (route) => false,
-          );
-        } else {
-          Navigator.pushNamedAndRemoveUntil(
-              context,
-              loginScreen
-          ,(route) => false,);
-        }
-      },
-    );
+    if (!mounted) return;
+
+    if (isUserLogin) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        homeScreen,
+        (route) => false,
+      );
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        loginScreen,
+        (route) => false,
+      );
+    }
   }
 }

@@ -10,3 +10,19 @@ class ShowPwdState extends LoginState {
 
   ShowPwdState({required this.showPwd});
 }
+
+class LoginLoadingState extends LoginState {
+  LoginLoadingState();
+}
+
+class LoginSuccessState extends LoginState {
+  final String? successMsg;
+
+  LoginSuccessState({this.successMsg});
+}
+
+class LoginErrorState extends LoginState {
+  final String? error;
+
+  LoginErrorState({this.error});
+}

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:untitled/route/route_path.dart';
 import 'package:untitled/route/routes.dart';
 import 'package:untitled/screen/splash_screen/view/splash_screen.dart';
+import 'package:untitled/service/hive_service.dart';
 import 'package:untitled/utils/preference_utils.dart';
 import 'package:untitled/utils/string_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await HiveService().initHive();
 
   await init();
   await SystemChrome.setPreferredOrientations([
@@ -34,8 +38,8 @@ class MyApp extends StatelessWidget {
         title: StringConstant.appName,
         onGenerateRoute: Routes.generateRoute,
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
-        // initialRoute: loginScreen,
+        // home: SplashScreen(),
+        initialRoute: splashScreen,
       ),
     );
   }

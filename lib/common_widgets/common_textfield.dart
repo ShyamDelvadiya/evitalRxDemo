@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:untitled/utils/color_constant.dart';
+import 'package:untitled/utils/common_validators.dart';
 import 'package:untitled/utils/size_constant.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -31,6 +32,9 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String)? onChanged;
   final void Function()? onTap;
+  final bool? isOptional;
+  final bool? isPhone;
+  final bool? isPassword;
 
   const CustomTextFormField(
       {super.key,
@@ -60,7 +64,10 @@ class CustomTextFormField extends StatelessWidget {
       this.autovalidateMode,
       this.prefixImage,
       this.onTap,
-      this.suffixImage});
+      this.suffixImage,
+      this.isOptional = false,
+      this.isPhone = false,
+      this.isPassword = false});
 
   @override
   Widget build(context) {
@@ -92,9 +99,17 @@ class CustomTextFormField extends StatelessWidget {
             },
             inputFormatters: inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: validator,
+            validator: (value) {
+              return isOptional!
+                  ? null
+                  : isPhone!
+                      ? CommonValidators.validateMobile(value)
+                      : isPassword!
+                          ? CommonValidators.validatePassword(value)
+                          : CommonValidators.validateName(value, labelText);
+            },
             decoration: InputDecoration(
-                border: InputBorder.none,
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 fillColor: fillColor,
                 filled: fillColorBool,
                 focusedErrorBorder: OutlineInputBorder(
@@ -131,7 +146,7 @@ class CustomTextFormField extends StatelessWidget {
                 hintStyle: hintstyle ??
                     const TextStyle(
                         fontWeight: FontWeight.w500,
-                        color: AppColor.hintTextColor,
+                        color: AppColor.lightBlack,
                         fontSize: FontConstant.defaultFont),
                 focusedBorder: focusBorder != null
                     ? OutlineInputBorder(
@@ -140,6 +155,9 @@ class CustomTextFormField extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       )
                     : null,
+                errorStyle: const TextStyle(
+                  fontWeight: FontWeight.bold
+                ),
                 enabledBorder: outlineInputBorder != null
                     ? OutlineInputBorder(
                         borderSide: const BorderSide(

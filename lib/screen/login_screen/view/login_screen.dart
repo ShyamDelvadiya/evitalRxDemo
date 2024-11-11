@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/common_widgets/common_button.dart';
 import 'package:untitled/common_widgets/common_textfield.dart';
+import 'package:untitled/route/route_path.dart';
 import 'package:untitled/screen/login_screen/bloc/login_bloc.dart';
 import 'package:untitled/utils/color_constant.dart';
+import 'package:untitled/utils/dialog_utils.dart';
 import 'package:untitled/utils/image_constants.dart';
 import 'package:untitled/utils/size_constant.dart';
 
@@ -15,8 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = false;
   LoginBloc? bloc;
@@ -38,20 +40,48 @@ class _LoginScreenState extends State<LoginScreen> {
       extendBody: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColor.blackColor,
-      body: Stack(
+      body: _body(context),
+    );
+  }
+
+  Widget _body(context) {
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, currentState) {
+        if (currentState is LoginLoadingState) {
+          DialogUtils.showLoader(context);
+        } else if (currentState is LoginSuccessState) {
+          DialogUtils.hideLoader(context);
+          DialogUtils.showMessage(context, currentState.successMsg.toString());
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            homeScreen,
+                (route) => false,
+          );
+        } else if (currentState is LoginErrorState) {
+          DialogUtils.hideLoader(context);
+          DialogUtils.showErrorMessage(context, currentState.error.toString());
+        }
+      },
+      child: Stack(
         children: [
           Positioned(
             top: 0,
             child: Image.asset(
               Images.bottomBackground,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
             ),
           ),
           Positioned(
             bottom: 0,
             child: Image.asset(
               Images.homeBackground,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
             ),
           ),
           Padding(
@@ -73,66 +103,62 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: AppColor.whiteColor),
                       ),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadiusConstant.radius,
-                          color: AppColor.suggestionColor2),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, bottom: 0),
-                        child: Center(
-                          child: CustomTextFormField(
-                            hintText: 'Enter Your Username',
-                            controller: email,
-                          ),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, bottom: 0, right: 15),
+                      child: Center(
+                        child: CustomTextFormField(
+                            hintText: 'Enter Your Mobile Number',
+                            controller: mobileNumberController,
+                            fillColorBool: true,
+                            fillColor: AppColor.grey,
+                            isPhone: true,
+                            textInputType: TextInputType.phone),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadiusConstant.radius,
-                            color: AppColor.suggestionColor2),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15, bottom: 0),
-                          child: Center(
-                            child: BlocBuilder<LoginBloc, LoginState>(
-                              builder: (context, currentState) {
-                                if (currentState is ShowPwdState) {
-                                  _obscureText = !currentState.showPwd;
-                                }
-                                return CustomTextFormField(
-                                  obscureText: _obscureText,
-                                  suffixImage: GestureDetector(
-                                    onTap: () {
-                                      bloc?.add(
-                                          ShowPassEvent(showPwd: _obscureText));
-                                    },
-                                    child: Icon(
-                                      _obscureText
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: AppColor.whiteColor,
-                                    ),
-                                  ),
-                                  hintText: 'Enter Your Password',
-                                  validator: (p0) {
-                                    return null;
-                                  },
-                                  controller: password,
-                                );
-                              },
-                            ),
-                          ),
+                      padding: const EdgeInsets.only(
+                          left: 15, bottom: 0, top: 15, right: 15),
+                      child: Center(
+                        child: BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, currentState) {
+                            if (currentState is ShowPwdState) {
+                              _obscureText = !currentState.showPwd;
+                            }
+                            return CustomTextFormField(
+                              obscureText: _obscureText,
+                              fillColorBool: true,
+                              fillColor: AppColor.grey,
+                              suffixImage: GestureDetector(
+                                onTap: () {
+                                  bloc?.add(
+                                      ShowPassEvent(showPwd: _obscureText));
+                                },
+                                child: Icon(
+                                  _obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: AppColor.whiteColor,
+                                ),
+                              ),
+                              hintText: 'Enter Your Password',
+                              isPassword: true,
+                              controller: passwordController,
+                            );
+                          },
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: CustomButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            bloc?.add(LoginButtonOnPressedEvent(
+                                mobileNumber: mobileNumberController.text,
+                                password: passwordController.text));
+                          }
+                        },
                         text: 'Login',
                       ),
                     ),

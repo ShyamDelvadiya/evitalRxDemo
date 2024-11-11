@@ -1,0 +1,19 @@
+part of 'home_bloc.dart';
+
+@immutable
+sealed class HomeEvent {}
+
+class LoadUsersEvent extends HomeEvent {}
+
+class UpdateRupeeEvent extends HomeEvent {
+  final UserModel user;
+  final int newRupee;
+
+  UpdateRupeeEvent(this.user, this.newRupee);
+}
+
+class FilterUsersEvent extends HomeEvent {
+  final String query;
+
+  FilterUsersEvent(this.query);
+}
