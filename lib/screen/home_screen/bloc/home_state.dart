@@ -17,8 +17,3 @@ class UserFilteredState extends HomeState {
 
   UserFilteredState(this.filteredUsers);
 }
-class UserPageLoadingState extends HomeState {
-  final List<UserModel> users;
-
-  UserPageLoadingState({required this.users});
-}

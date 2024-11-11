@@ -30,9 +30,11 @@ class LoginContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(
-                    bottom: PaddingConstant.maximumPadding, top: 0),
+              const    Padding(
+                padding:  EdgeInsets.only(
+                    left: PaddingConstant.mainPagePadding,
+                    top: 0,
+                    right: PaddingConstant.mainPagePadding),
                 child: Text(
                   StringConstant.login,
                   style: TextStyle(

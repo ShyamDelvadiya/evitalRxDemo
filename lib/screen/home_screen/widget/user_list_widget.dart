@@ -61,89 +61,89 @@ class UserListWidget extends StatelessWidget {
       );
     }
 
-    return (paginatedUsers.isEmpty)
-        ? const Center(
-            child: Text(
+    return
+      (paginatedUsers.isEmpty)?
+       const Center(
+          child: Text(
             StringConstant.noUsersFound,
             style: TextStyle(
               color: AppColor.whiteColor,
             ),
-          ))
-        : Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: AnimationLimiter(
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: paginatedUsers.length,
-                itemBuilder: (context, index) {
-                  final user = paginatedUsers[index];
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: Card(
-                            color: AppColor.whiteColor.withOpacity(.1),
-                            child: ListTile(
-                              leading: GestureDetector(
-                                onTap: () {
-                                  showZoomableImageDialog(
-                                      context, user.imageUrl);
-                                },
-                                child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: user.imageUrl,
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                  ),
-                                ),
-                              ),
-                              title: Text(user.name),
-                              titleTextStyle: const TextStyle(
-                                  color: AppColor.whiteColor,
-                                  fontWeight: FontWeight.bold),
-                              subtitleTextStyle: TextStyle(
-                                  color: AppColor.whiteColor.withOpacity(.7)),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Phone: ${user.phone}"),
-                                  Text("City: ${user.city}"),
-                                  Text(
-                                    "Rupee: ${user.rupee} (${user.rupee > 50 ? StringConstant.high : StringConstant.low})",
-                                    style: TextStyle(
-                                      color: user.rupee > 50
-                                          ? Colors.green
-                                          : Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: AppColor.whiteColor,
-                                ),
-                                onPressed: () => editRupeesCallBack?.call(user),
-                              ),
+          )):
+
+      Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: AnimationLimiter(
+        child: ListView.builder(
+          controller: scrollController,
+          itemCount: paginatedUsers.length,
+          itemBuilder: (context, index) {
+            final user = paginatedUsers[index];
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: Card(
+                      color: AppColor.whiteColor.withOpacity(.1),
+                      child: ListTile(
+                        leading: GestureDetector(
+                          onTap: () {
+                            showZoomableImageDialog(context, user.imageUrl);
+                          },
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: user.imageUrl,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                           ),
                         ),
+                        title: Text(user.name),
+                        titleTextStyle: const TextStyle(
+                            color: AppColor.whiteColor,
+                            fontWeight: FontWeight.bold),
+                        subtitleTextStyle:
+                            TextStyle(color: AppColor.whiteColor.withOpacity(.7)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Phone: ${user.phone}"),
+                            Text("City: ${user.city}"),
+                            Text(
+                              "Rupee: ${user.rupee} (${user.rupee > 50 ? StringConstant.high : StringConstant.low})",
+                              style: TextStyle(
+                                color:
+                                    user.rupee > 50 ? Colors.green : Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(
+                            Icons.edit,
+                            color: AppColor.whiteColor,
+                          ),
+                          onPressed: () => editRupeesCallBack?.call(user),
+                        ),
                       ),
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          );
+            );
+          },
+        ),
+      ),
+    );
   }
 }

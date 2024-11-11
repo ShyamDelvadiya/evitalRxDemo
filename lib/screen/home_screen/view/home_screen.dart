@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   HomeBloc? bloc;
   List<UserModel> paginatedUsers = [];
   bool isLoading = false;
-  bool isPageLoading = false;
 
   @override
   void initState() {
@@ -135,6 +134,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: rupeeController,
                 hintText: StringConstant.enterNewRupeeTitle,
                 textInputType: TextInputType.number,
+                outlineInputBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(width: 1,),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 isRupee: true,
                 textStyle: const TextStyle(color: AppColor.blackColor),
               ),
