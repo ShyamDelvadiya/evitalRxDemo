@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:untitled/route/route_path.dart';
 import 'package:untitled/route/routes.dart';
-import 'package:untitled/screen/splash_screen/view/splash_screen.dart';
 import 'package:untitled/service/hive_service.dart';
 import 'package:untitled/utils/preference_utils.dart';
 import 'package:untitled/utils/string_constants.dart';

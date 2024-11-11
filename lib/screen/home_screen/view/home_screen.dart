@@ -1,10 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:untitled/common_widgets/common_bottom_background.dart';
+import 'package:untitled/common_widgets/common_home_background.dart';
+import 'package:untitled/common_widgets/common_textfield.dart';
 import 'package:untitled/screen/home_screen/bloc/home_bloc.dart';
 import 'package:untitled/screen/home_screen/models/user_model.dart';
+import 'package:untitled/screen/home_screen/widget/build_search_bar.dart';
+import 'package:untitled/screen/home_screen/widget/user_list_widget.dart';
 import 'package:untitled/utils/color_constant.dart';
+import 'package:untitled/utils/string_constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,93 +45,75 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return _mainView(context);
+  }
+
+  Widget _mainView(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: _body(context),
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColor.blackColor,
     );
   }
 
   Widget _body(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: searchController,
-            decoration: const InputDecoration(
-              hintText: 'Search by name, phone, or city',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (query) {
-              bloc?.add(FilterUsersEvent(query));
-            },
-          ),
-        ),
-        Expanded(
-          child: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, currentState) {
-              if (currentState is UserLoadingState) {
-                return Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: AppColor.redColor, size: 100));
-              } else if (currentState is UserLoadedState ||
-                  currentState is UserFilteredState) {
-                final users = currentState is UserLoadedState
-                    ? currentState.users
-                    : (currentState as UserFilteredState).filteredUsers;
-                final paginatedUsers =
-                    users.take((_currentPage + 1) * _pageSize).toList();
-                if (users.isEmpty) {
-                  return const Center(child: Text("No users found."));
-                }
-                return ListView.builder(
-                  controller: _scrollController,
-                  itemCount: paginatedUsers.length,
-                  itemBuilder: (context, index) {
-                    final user = paginatedUsers[index];
-                    return Card(
-                      child: ListTile(
-                        leading: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: user.imageUrl,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+        const CommonHomeBackground(),
+        const CommonBottomBackground(),
+        SafeArea(
+          child: Column(
+            children: [
+              BuildSearchBar(
+                searchController: searchController,
+                filterUsersListCallBack: (query) {
+                  bloc?.add(FilterUsersEvent(query));
+                },
+              ),
+              Expanded(
+                child: BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, currentState) {
+                    if (currentState is UserLoadingState) {
+                      return Center(
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                              color: AppColor.whiteColor, size: 100));
+                    } else if (currentState is UserLoadedState ||
+                        currentState is UserFilteredState) {
+                      final users = currentState is UserLoadedState
+                          ? currentState.users
+                          : (currentState as UserFilteredState).filteredUsers;
+                      final paginatedUsers =
+                          users.take((_currentPage + 1) * _pageSize).toList();
+                      if (users.isEmpty) {
+                        return const Center(
+                            child: Text(
+                          StringConstant.noUsersFound,
+                          style: TextStyle(
+                            color: AppColor.whiteColor,
                           ),
+                        ));
+                      }
+                      return UserListWidget(
+                        scrollController: _scrollController,
+                        paginatedUsers: paginatedUsers,
+                        editRupeesCallBack: (user) {
+                          _showEditDialog(context, user);
+                        },
+                      );
+                    } else {
+                      return const Center(
+                          child: Text(
+                        StringConstant.noUsersFound,
+                        style: TextStyle(
+                          color: AppColor.whiteColor,
                         ),
-                        title: Text(user.name),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Phone: ${user.phone}"),
-                            Text("City: ${user.city}"),
-                            Text(
-                              "Rupee: ${user.rupee} (${user.rupee > 50 ? 'High' : 'Low'})",
-                              style: TextStyle(
-                                color:
-                                    user.rupee > 50 ? Colors.green : Colors.red,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () => _showEditDialog(context, user),
-                        ),
-                      ),
-                    );
+                      ));
+                    }
                   },
-                );
-              } else {
-                return const Center(child: Text("No users found."));
-              }
-            },
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -140,24 +127,41 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Edit Rupee"),
-        content: TextField(
-          controller: rupeeController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: "Enter new Rupee value"),
+        title: const Text(StringConstant.editRupee),
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+          // height: 200, // Set a fixed
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextFormField(
+                controller: rupeeController,
+                hintText: StringConstant.enterNewRupeeTitle,
+                textInputType: TextInputType.number,
+                isRupee: true,
+                textStyle: const TextStyle(color: AppColor.blackColor),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: const Text(StringConstant.cancel),
           ),
           TextButton(
             onPressed: () {
-              final newRupee = int.tryParse(rupeeController.text) ?? user.rupee;
-              bloc?.add(UpdateRupeeEvent(user, newRupee));
-              Navigator.pop(context);
+              final newRupee =
+                  int.tryParse(rupeeController.text) ?? user.rupee.toInt();
+
+              // Validate the rupee value (1 to 100)
+              if (newRupee < 1 || newRupee > 100) {
+              } else {
+                bloc?.add(UpdateRupeeEvent(user, newRupee));
+                Navigator.pop(context);
+              }
             },
-            child: const Text("Save"),
+            child: const Text(StringConstant.save),
           ),
         ],
       ),

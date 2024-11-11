@@ -35,39 +35,42 @@ class CustomTextFormField extends StatelessWidget {
   final bool? isOptional;
   final bool? isPhone;
   final bool? isPassword;
+  final bool? isRupee;
 
-  const CustomTextFormField(
-      {super.key,
-      this.controller,
-      this.hintstyle,
-      this.textStyle,
-      this.hintText,
-      this.textInputType,
-      this.maxLine,
-      this.focusNode,
-      this.nextNode,
-      this.textInputAction,
-      this.isPhoneNumber = false,
-      this.fillColorBool = false,
-      this.readonly = false,
-      this.validator,
-      this.obscureText = false,
-      this.validatorMessage,
-      this.capitalization = TextCapitalization.none,
-      this.fillColor,
-      this.isBorder = false,
-      this.labelText,
-      this.inputFormatters,
-      this.onChanged,
-      this.outlineInputBorder,
-      this.focusBorder,
-      this.autovalidateMode,
-      this.prefixImage,
-      this.onTap,
-      this.suffixImage,
-      this.isOptional = false,
-      this.isPhone = false,
-      this.isPassword = false});
+  const CustomTextFormField({
+    super.key,
+    this.controller,
+    this.hintstyle,
+    this.textStyle,
+    this.hintText,
+    this.textInputType,
+    this.maxLine,
+    this.focusNode,
+    this.nextNode,
+    this.textInputAction,
+    this.isPhoneNumber = false,
+    this.fillColorBool = false,
+    this.readonly = false,
+    this.validator,
+    this.obscureText = false,
+    this.validatorMessage,
+    this.capitalization = TextCapitalization.none,
+    this.fillColor,
+    this.isBorder = false,
+    this.labelText,
+    this.inputFormatters,
+    this.onChanged,
+    this.outlineInputBorder,
+    this.focusBorder,
+    this.autovalidateMode,
+    this.prefixImage,
+    this.onTap,
+    this.suffixImage,
+    this.isOptional = false,
+    this.isPhone = false,
+    this.isPassword = false,
+    this.isRupee = false,
+  });
 
   @override
   Widget build(context) {
@@ -99,6 +102,9 @@ class CustomTextFormField extends StatelessWidget {
             },
             inputFormatters: inputFormatters,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            onTapOutside: (event) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             validator: (value) {
               return isOptional!
                   ? null
@@ -106,10 +112,13 @@ class CustomTextFormField extends StatelessWidget {
                       ? CommonValidators.validateMobile(value)
                       : isPassword!
                           ? CommonValidators.validatePassword(value)
-                          : CommonValidators.validateName(value, labelText);
+                          : isRupee!
+                              ? CommonValidators.validateRupee(value)
+                              : CommonValidators.validateName(value, labelText);
             },
             decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 fillColor: fillColor,
                 filled: fillColorBool,
                 focusedErrorBorder: OutlineInputBorder(
@@ -155,9 +164,7 @@ class CustomTextFormField extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       )
                     : null,
-                errorStyle: const TextStyle(
-                  fontWeight: FontWeight.bold
-                ),
+                errorStyle: const TextStyle(fontWeight: FontWeight.bold),
                 enabledBorder: outlineInputBorder != null
                     ? OutlineInputBorder(
                         borderSide: const BorderSide(

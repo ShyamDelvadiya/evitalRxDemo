@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
   final BorderRadius borderRadius;
   final void Function()? onTap;
 
-  const CustomButton({
+  const CustomButton({super.key,
     required this.text,
     this.color = (AppColor.buttonSecondary),
     this.textcolor = (AppColor.whiteColor),

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:untitled/common_widgets/common_bottom_background.dart';
 import 'package:untitled/common_widgets/common_button.dart';
+import 'package:untitled/common_widgets/common_home_background.dart';
 import 'package:untitled/common_widgets/common_textfield.dart';
 import 'package:untitled/route/route_path.dart';
 import 'package:untitled/screen/login_screen/bloc/login_bloc.dart';
 import 'package:untitled/utils/color_constant.dart';
 import 'package:untitled/utils/dialog_utils.dart';
-import 'package:untitled/utils/image_constants.dart';
 import 'package:untitled/utils/size_constant.dart';
+import 'package:untitled/utils/string_constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushNamedAndRemoveUntil(
             context,
             homeScreen,
-                (route) => false,
+            (route) => false,
           );
         } else if (currentState is LoginErrorState) {
           DialogUtils.hideLoader(context);
@@ -64,28 +66,13 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Stack(
         children: [
-          Positioned(
-            top: 0,
-            child: Image.asset(
-              Images.bottomBackground,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Image.asset(
-              Images.homeBackground,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-            ),
-          ),
+          const CommonHomeBackground(),
+          const CommonBottomBackground(),
           Padding(
-            padding: const EdgeInsets.only(left: 29, right: 29, top: 00),
+            padding: const EdgeInsets.only(
+              left: PaddingConstant.maximumPadding,
+              right: PaddingConstant.maximumPadding,
+            ),
             child: Form(
               key: _formKey,
               child: SafeArea(
@@ -94,21 +81,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(bottom: 30, top: 0),
+                      padding: EdgeInsets.only(
+                          bottom: PaddingConstant.maximumPadding, top: 0),
                       child: Text(
-                        'Login',
+                        StringConstant.login,
+
                         style: TextStyle(
-                            fontSize: 25,
+                            fontSize: FontConstant.maxBigFont,
                             fontWeight: FontWeight.bold,
                             color: AppColor.whiteColor),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, bottom: 0, right: 15),
+                          left: PaddingConstant.mainPagePadding,
+                          bottom: 0,
+                          right: PaddingConstant.mainPagePadding),
                       child: Center(
                         child: CustomTextFormField(
-                            hintText: 'Enter Your Mobile Number',
+                            hintText: StringConstant.mobileNumberHintTxt,
                             controller: mobileNumberController,
                             fillColorBool: true,
                             fillColor: AppColor.grey,
@@ -118,7 +109,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 15, bottom: 0, top: 15, right: 15),
+                        left: PaddingConstant.mainPagePadding,
+                        bottom: 0,
+                        top: PaddingConstant.mainPagePadding,
+                        right: PaddingConstant.mainPagePadding,
+                      ),
                       child: Center(
                         child: BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, currentState) {
@@ -141,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: AppColor.whiteColor,
                                 ),
                               ),
-                              hintText: 'Enter Your Password',
+                              hintText: StringConstant.passwordHintTxt,
                               isPassword: true,
                               controller: passwordController,
                             );
@@ -159,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 password: passwordController.text));
                           }
                         },
-                        text: 'Login',
+                        text: StringConstant.login,
                       ),
                     ),
                   ],

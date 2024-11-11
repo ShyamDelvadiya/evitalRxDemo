@@ -9,7 +9,7 @@ import 'package:untitled/screen/splash_screen/view/splash_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>?;
+    // Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>?;
     switch (settings.name) {
       case splashScreen:
         return MaterialPageRoute(

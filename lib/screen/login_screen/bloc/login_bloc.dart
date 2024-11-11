@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/utils/pref_constants.dart';
 import 'package:untitled/utils/preference_utils.dart';
 import 'package:untitled/utils/string_constants.dart';

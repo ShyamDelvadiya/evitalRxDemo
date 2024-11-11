@@ -74,7 +74,5 @@ class HiveService {
     });
 
     await userBox.addAll(dummyUsers);
-
-    print("Dummy data added successfully.");
   }
 }

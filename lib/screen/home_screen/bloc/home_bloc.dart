@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:untitled/screen/home_screen/models/user_model.dart';
 import 'package:untitled/service/hive_service.dart';
 
@@ -30,6 +30,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       userList = hiveService.userBox.values.toList();
       emit(UserLoadedState(users: userList));
     } else if (event is FilterUsersEvent) {
+      emit(UserLoadingState());
+      await Future.delayed(const Duration(milliseconds: 700));
+
       final query = event.query.toLowerCase();
       final filteredUsersList = userList.where(
         (user) {
