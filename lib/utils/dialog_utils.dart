@@ -19,7 +19,7 @@ class DialogUtils {
               height: 100,
               width: 100,
               child: Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
+                child: LoadingAnimationWidget.hexagonDots(
                     color: AppColor.whiteColor, size: 50,),
               ),
             ),

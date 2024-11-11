@@ -16,3 +16,7 @@ class FilterUsersEvent extends HomeEvent {
 
   FilterUsersEvent(this.query);
 }
+class LoadMoreUsersEvent extends HomeEvent {
+
+  LoadMoreUsersEvent();
+}

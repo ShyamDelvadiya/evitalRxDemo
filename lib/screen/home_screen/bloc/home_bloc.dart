@@ -12,6 +12,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final hiveService = HiveService();
   List<UserModel> userList = [];
   String? _lastQuery;
+  bool isPageLoading= false;
 
   HomeBloc() : super(HomeInitial()) {
     on<HomeEvent>(_mapEventToState);
@@ -58,6 +59,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         },
       ).toList();
       emit(UserFilteredState(filteredUsersList));
+    } else if (event is LoadMoreUsersEvent) { // New event for loading more users
+      if (!isPageLoading) {
+        isPageLoading = true;
+        emit(UserPageLoadingState(users: userList)); // Emit loading state with current data
+        await Future.delayed(const Duration(seconds: 2));
+        final newUsers = hiveService.userBox.values.toList();
+        userList.addAll(newUsers);
+        isPageLoading = false;
+        emit(UserLoadedState(users: userList));
+      }
     }
   }
 }

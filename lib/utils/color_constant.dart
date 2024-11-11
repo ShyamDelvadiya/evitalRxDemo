@@ -22,7 +22,7 @@ class AppColor {
   static const lightGreys = Color.fromRGBO(116, 113, 113, 1);
   static const accentColorDark100 = Color(0xff783789);
   static const disableColor = Color(0xff9CA1A4);
-  static const buttonSecondary = Color(0xFFFF6400);
+  static const buttonSecondary = Color.fromRGBO(97,114,243,100);
   static const selectedOptionIcon = Color(0xffEBF0FC);
   static const blackColor = Colors.black;
   static const greenColor = Color.fromRGBO(21, 203, 75, 1);

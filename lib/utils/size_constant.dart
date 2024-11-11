@@ -25,6 +25,7 @@ class PaddingConstant {
   static const double medium25Padding = 25.0;
   static const double maximumPadding = 30.0;
   static const double extraMaximumPadding = 40.0;
+  static const double extraMaximum50Padding = 50.0;
 
   static SizedBox verticalSpace({double? height = 10}) {
     return SizedBox(

@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.height = 51,
     this.width,
-    this.borderRadius = const BorderRadius.all(Radius.circular(16.33)),
+    this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   });
 
   @override

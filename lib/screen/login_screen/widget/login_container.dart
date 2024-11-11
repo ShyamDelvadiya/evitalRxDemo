@@ -44,14 +44,15 @@ class LoginContainer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(
                     left: PaddingConstant.mainPagePadding,
-                    bottom: 0,
+                    top: PaddingConstant.medium25Padding,
                     right: PaddingConstant.mainPagePadding),
                 child: Center(
                   child: CustomTextFormField(
                       hintText: StringConstant.mobileNumberHintTxt,
                       controller: mobileNumberController,
                       fillColorBool: true,
-                      fillColor: AppColor.grey,
+                      fillColor: AppColor.suggestionColor2,
+                      hintstyle: const TextStyle(color: AppColor.grey),
                       isPhone: true,
                       textInputType: TextInputType.phone),
                 ),
@@ -60,7 +61,7 @@ class LoginContainer extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   left: PaddingConstant.mainPagePadding,
                   bottom: 0,
-                  top: PaddingConstant.mainPagePadding,
+                  top: PaddingConstant.maximumPadding,
                   right: PaddingConstant.mainPagePadding,
                 ),
                 child: Center(
@@ -72,7 +73,7 @@ class LoginContainer extends StatelessWidget {
                       return CustomTextFormField(
                         obscureText: obscureText,
                         fillColorBool: true,
-                        fillColor: AppColor.grey,
+                        fillColor: AppColor.suggestionColor2,
                         suffixImage: GestureDetector(
                           onTap: () {
                             bloc.add(ShowPassEvent(showPwd: obscureText));
@@ -84,6 +85,8 @@ class LoginContainer extends StatelessWidget {
                             color: AppColor.whiteColor,
                           ),
                         ),
+                        hintstyle: const TextStyle(color: AppColor.grey),
+
                         hintText: StringConstant.passwordHintTxt,
                         isPassword: true,
                         controller: passwordController,
@@ -93,7 +96,10 @@ class LoginContainer extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: PaddingConstant.mainPagePadding),
+                padding: const EdgeInsets.only(
+                    left: PaddingConstant.mainPagePadding,
+                    top: PaddingConstant.extraMaximum50Padding,
+                    right: PaddingConstant.mainPagePadding),
                 child: CustomButton(
                   onPressed: () {
                     if (formKey.currentState?.validate() ?? false) {

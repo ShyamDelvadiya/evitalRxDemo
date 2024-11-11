@@ -118,7 +118,7 @@ class CustomTextFormField extends StatelessWidget {
             },
             decoration: InputDecoration(
                 border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 fillColor: fillColor,
                 filled: fillColorBool,
                 focusedErrorBorder: OutlineInputBorder(
@@ -126,7 +126,7 @@ class CustomTextFormField extends StatelessWidget {
                     width: 1,
                     color: AppColor.redColor,
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 contentPadding: const EdgeInsets.only(left: 10),
                 errorBorder: OutlineInputBorder(
@@ -134,7 +134,7 @@ class CustomTextFormField extends StatelessWidget {
                     width: 1,
                     color: AppColor.redColor,
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 suffixIcon: suffixImage,
                 suffixIconConstraints:
@@ -161,17 +161,16 @@ class CustomTextFormField extends StatelessWidget {
                     ? OutlineInputBorder(
                         borderSide: const BorderSide(
                             width: 1, color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(10),
                       )
                     : null,
                 errorStyle: const TextStyle(fontWeight: FontWeight.bold),
-                enabledBorder: outlineInputBorder != null
-                    ? OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 1, color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(12),
-                      )
-                    : null),
+                enabledBorder: outlineInputBorder ??
+                    OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 1, color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(10),
+                    )),
           ),
         ),
       ],

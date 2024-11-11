@@ -24,7 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentPage = 0;
   final int _pageSize = 20;
   HomeBloc? bloc;
-  List<UserModel> paginatedUsers=[];
+  List<UserModel> paginatedUsers = [];
+  bool isLoading = false;
+  bool isPageLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -65,42 +68,44 @@ class _HomeScreenState extends State<HomeScreen> {
         SafeArea(
           child: Column(
             children: [
-              BuildSearchBar(
-                searchController: searchController,
-                filterUsersListCallBack: (query) {
-                  bloc?.add(FilterUsersEvent(query));
-                },
-              ),
               Expanded(
                 child: BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, currentState) {
                     if (currentState is UserLoadingState) {
-                      return Center(
-                          child: LoadingAnimationWidget.staggeredDotsWave(
-                              color: AppColor.whiteColor, size: 100));
+                      isLoading = true;
                     } else if (currentState is UserLoadedState ||
                         currentState is UserFilteredState) {
+                      isLoading = false;
                       final users = currentState is UserLoadedState
                           ? currentState.users
                           : (currentState as UserFilteredState).filteredUsers;
-                       paginatedUsers =
+                      paginatedUsers =
                           users.take((_currentPage + 1) * _pageSize).toList();
-                      if (users.isEmpty) {
-                        return const Center(
-                            child: Text(
-                          StringConstant.noUsersFound,
-                          style: TextStyle(
-                            color: AppColor.whiteColor,
-                          ),
-                        ));
-                      }
-
-                    } return UserListWidget(
-                      scrollController: _scrollController,
-                      paginatedUsers: paginatedUsers,
-                      editRupeesCallBack: (user) {
-                        _showEditDialog(context, user);
-                      },
+                    }
+                    return Column(
+                      children: [
+                        BuildSearchBar(
+                          searchController: searchController,
+                          filterUsersListCallBack: (query) {
+                            bloc?.add(FilterUsersEvent(query));
+                          },
+                        ),
+                        isLoading
+                            ? Expanded(
+                                child: Center(
+                                    child: LoadingAnimationWidget.hexagonDots(
+                                        color: AppColor.whiteColor, size: 50)),
+                              )
+                            : Expanded(
+                                child: UserListWidget(
+                                  scrollController: _scrollController,
+                                  paginatedUsers: paginatedUsers,
+                                  editRupeesCallBack: (user) {
+                                    _showEditDialog(context, user);
+                                  },
+                                ),
+                              ),
+                      ],
                     );
                   },
                 ),
