@@ -6,8 +6,6 @@ import 'package:untitled/utils/color_constant.dart';
 import 'package:untitled/utils/image_constants.dart';
 import 'package:untitled/utils/pref_constants.dart';
 import 'package:untitled/utils/preference_utils.dart';
-import 'package:untitled/utils/size_constant.dart';
-import 'package:untitled/utils/string_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
